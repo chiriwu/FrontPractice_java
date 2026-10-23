@@ -10,7 +10,7 @@
         <relativePath></relativePath>
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>base-end</artifactId>
+    <artifactId>wechat-api</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

@@ -12,7 +12,8 @@ public enum ResultCode {
     FORBIDDEN(403, "无权限访问"),
     NOT_FOUND(404, "资源不存在"),
     CONFLICT(409, "资源冲突"),
-    INTERNAL_ERROR(500, "服务器内部错误");
+    INTERNAL_ERROR(500, "服务器内部错误"),
+    UPSTREAM_ERROR(502, "上游服务异常");
 
     private final int code;
     private final String msg;

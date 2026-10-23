@@ -2,8 +2,6 @@
 CREATE TABLE IF NOT EXISTS `wx_user` (
     `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `openid` VARCHAR(64) NOT NULL COMMENT '微信用户唯一标识',
-    `nickname` VARCHAR(64) DEFAULT NULL COMMENT '昵称',
-    `avatar_url` VARCHAR(512) DEFAULT NULL COMMENT '头像URL',
     `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_openid` (`openid`)
@@ -21,3 +19,13 @@ CREATE TABLE IF NOT EXISTS `user_favorite` (
     UNIQUE KEY `uk_user_question` (`user_id`, `question_id`),
     KEY `idx_user_ts` (`user_id`, `ts`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户收藏表';
+
+-- 登录会话表：token → openid 映射，/user/report 签发，7 天过期，重启不失效
+CREATE TABLE IF NOT EXISTS `user_session` (
+    `token` VARCHAR(64) NOT NULL COMMENT '登录令牌（UUID 去横线）',
+    `openid` VARCHAR(64) NOT NULL COMMENT '微信用户唯一标识',
+    `expire_at` BIGINT NOT NULL COMMENT '过期时间戳（毫秒）',
+    `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    PRIMARY KEY (`token`),
+    KEY `idx_expire_at` (`expire_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='登录会话表';

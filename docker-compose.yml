@@ -5,7 +5,8 @@ services:
     ports:
       - "9090:9090"
     environment:
-      WX_API_KEY: ${WX_API_KEY}
+      WX_APP_ID: ${WX_APP_ID}
+      WX_APP_SECRET: ${WX_APP_SECRET}
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/local_data?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}

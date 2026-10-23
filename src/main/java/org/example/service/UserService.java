@@ -32,31 +32,16 @@ public class UserService {
     }
 
     /**
-     * 上报用户信息：首次插入，之后只更新非空的昵称/头像。
+     * 上报用户：首次插入 openid，已存在则直接返回。
      */
-    public ReportResult report(String openid, String nickname, String avatarUrl) {
+    public ReportResult report(String openid) {
         WxUser user = findByOpenId(openid);
         boolean created = false;
         if (user == null) {
             user = new WxUser();
             user.setOpenid(openid.trim());
-            user.setNickname(trimToNull(nickname));
-            user.setAvatarUrl(trimToNull(avatarUrl));
             wxUserMapper.insert(user);
             created = true;
-        } else {
-            boolean changed = false;
-            if (hasText(nickname)) {
-                user.setNickname(nickname.trim());
-                changed = true;
-            }
-            if (hasText(avatarUrl)) {
-                user.setAvatarUrl(avatarUrl.trim());
-                changed = true;
-            }
-            if (changed) {
-                wxUserMapper.updateById(user);
-            }
         }
         return new ReportResult(user, created);
     }
@@ -110,10 +95,6 @@ public class UserService {
 
     private static boolean hasText(String value) {
         return value != null && !value.isBlank();
-    }
-
-    private static String trimToNull(String value) {
-        return hasText(value) ? value.trim() : null;
     }
 
     public record ReportResult(WxUser user, boolean created) {
